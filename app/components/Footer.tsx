@@ -1,7 +1,7 @@
 import { Instagram } from 'lucide-react';
 
 const socialLinks = [
-  { icon: Instagram, href: '#', label: 'Instagram' },
+  { icon: Instagram, href: 'https://www.instagram.com/gu_mil4/', label: 'Instagram' },
 ];
 
 const footerLinks = {
