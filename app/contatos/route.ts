@@ -1,0 +1,56 @@
+
+import { NextRequest, NextResponse } from 'next/server';
+import { Pool } from 'pg';
+import type { ContatoCreate } from './types';
+
+const pool = new Pool({
+  connectionString: process.env.NEON_DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+export async function POST(req: NextRequest) {
+  const client = await pool.connect();
+  try {
+    const data: ContatoCreate = await req.json();
+
+    // Validar dados
+    if (!data.name || !data.email || !data.phone) {
+      return NextResponse.json(
+        { success: false, message: 'Nome, email e telefone são obrigatórios.' },
+        { status: 400 }
+      );
+    }
+
+    // Inserir contato na tabela contatos_novos
+    const query = `
+      INSERT INTO contatos_novos (nome, email, telefone, mensagem, data_recebimento)
+      VALUES ($1, $2, $3, $4, NOW())
+      RETURNING id;
+    `;
+
+    const result = await client.query(query, [
+      data.name,
+      data.email,
+      data.phone,
+      data.message || null,
+    ]);
+
+    const contatoId = result.rows[0].id;
+
+    return NextResponse.json({ 
+      success: true,
+      id: contatoId,
+      message: 'Contato salvo com sucesso!' 
+    });
+  } catch (error) {
+    console.error('Erro ao salvar contato:', error);
+    return NextResponse.json(
+      { success: false, message: 'Erro interno ao salvar contato.' },
+      { status: 500 }
+    );
+  } finally {
+    client.release();
+  }
+}
