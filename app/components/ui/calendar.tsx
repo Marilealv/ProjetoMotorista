@@ -66,7 +66,7 @@ function Calendar({
     IconRight: ({ className, ...props }: React.ComponentProps<typeof ChevronRight>) => (
       <ChevronRight className={cn("size-4", className)} {...props} />
     ),
-    } as any}
+    } as const}
       {...props}
     />
   );

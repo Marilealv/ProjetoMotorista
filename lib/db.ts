@@ -8,7 +8,7 @@ const pool = new Pool({
   },
 });
 
-export async function queryDatabase(query: string, values?: any[]) {
+export async function queryDatabase(query: string, values?: (string | number | boolean | null)[]) {
   const client = await pool.connect();
   try {
     const result = await client.query(query, values);
