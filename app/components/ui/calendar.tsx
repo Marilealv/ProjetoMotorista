@@ -59,16 +59,6 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
-      components={
-        {
-          IconLeft: ({ className, ...props }: React.ComponentProps<typeof ChevronLeft>) => (
-            <ChevronLeft className={cn("size-4", className)} {...props} />
-          ),
-          IconRight: ({ className, ...props }: React.ComponentProps<typeof ChevronRight>) => (
-            <ChevronRight className={cn("size-4", className)} {...props} />
-          ),
-        } as const
-      }
       {...props}
     />
   );
