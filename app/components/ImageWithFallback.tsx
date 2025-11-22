@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 
 const ERROR_IMG_SRC = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAKICAGPHJLY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNGM0Y0RjYiLz4KICAKICAGPHRLEHQGED0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzk3MDAwMDAwIiBkeT0iLjNlbSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+CiAgICBJbWFnZW0gbsOjbyBkaXNwb27Aw610ZWwKICAgIDwvdGV4dD4KICAKPC9zdmc+'
 
-interface ImageWithFallbackProps extends React.ImgHTMLAttributes<HTMLImageElement> {}
-
-export function ImageWithFallback({ src, alt, style, className, ...rest }: ImageWithFallbackProps) {
+export function ImageWithFallback({ src, alt, style, className, ...rest }: React.ImgHTMLAttributes<HTMLImageElement>) {
   const [didError, setDidError] = useState(false)
 
   const handleError = () => setDidError(true)
