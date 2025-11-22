@@ -125,7 +125,13 @@ function ChartTooltipContent({
     indicator?: "line" | "dot" | "dashed";
     nameKey?: string;
     labelKey?: string;
-  } & { payload?: Array<{ dataKey: string; name?: string; [key: string]: unknown }> }) {
+    payload?: Array<{ dataKey: string; name?: string; [key: string]: unknown }>;
+    label?: string | number;
+    labelFormatter?: (value: unknown) => string;
+    labelClassName?: string;
+    formatter?: (value: unknown) => string;
+    color?: string;
+  }) {
   const { config } = useChart();
 
   const tooltipLabel = React.useMemo(() => {
