@@ -238,7 +238,7 @@ function ChartTooltipContent({
                         {itemConfig?.label || item.name}
                       </span>
                     </div>
-                    {item.value && (
+                    {(item.value as React.ReactNode) && (
                       <span className="text-foreground font-mono font-medium tabular-nums">
                         {(item.value as unknown as { toLocaleString: () => string })?.toLocaleString?.() || item.value}
                       </span>
