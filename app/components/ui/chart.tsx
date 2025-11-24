@@ -129,7 +129,7 @@ function ChartTooltipContent({
     label?: string | number;
     labelFormatter?: (value: unknown) => string;
     labelClassName?: string;
-    formatter?: (value: unknown) => string;
+    formatter?: (value: unknown, name?: unknown, item?: unknown, index?: unknown, payload?: unknown) => string;
     color?: string;
   }) {
   const { config } = useChart();
@@ -199,7 +199,7 @@ function ChartTooltipContent({
               )}
             >
               {formatter && item?.value !== undefined && item.name ? (
-                formatter(item.value, item.name, item, index, (item.payload ?? {}) as Record<string, unknown>)
+                formatter(item.value, item.name, item, index, item.payload ?? undefined)
               ) : (
                 <>
                   {itemConfig?.icon ? (
