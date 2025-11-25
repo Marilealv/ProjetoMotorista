@@ -2,7 +2,7 @@ import "./globals.css";
 import type { ReactNode } from "react";
 
 export const metadata = {
-  title: "Motorista Premium",
+  title: "Motorista Particular",
   description: "Transporte executivo",
 };
 

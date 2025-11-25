@@ -1,16 +1,10 @@
 
 import { NextRequest, NextResponse } from 'next/server';
-import { Pool } from 'pg';
+import { getDatabase } from '@/lib/db';
 import type { ContatoCreate } from './types';
 
-const pool = new Pool({
-  connectionString: process.env.NEON_DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
 export async function POST(req: NextRequest) {
+  const pool = getDatabase();
   const client = await pool.connect();
   try {
     const data: ContatoCreate = await req.json();
