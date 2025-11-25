@@ -133,12 +133,12 @@ export function Contact() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 className="group"
               >
-                <div className="h-full p-8 rounded-2xl bg-gradient-to-b from-white/5 to-transparent border border-white/10 hover:border-white/20 transition-all duration-300 text-center">
+                <div className="h-full p-8 rounded-2xl bg-linear-to-b from-white/5 to-transparent border border-white/10 hover:border-white/20 transition-all duration-300 text-center">
                   <div className="w-16 h-16 mx-auto mb-6 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/10 transition-all duration-300">
                     <info.icon className="w-8 h-8" />
                   </div>
                   <div className="text-sm text-gray-400 mb-3 tracking-wider uppercase">{info.title}</div>
-                  <div className="text-lg break-words">{info.detail}</div>
+                  <div className="text-lg wrap-break-word">{info.detail}</div>
                 </div>
               </motion.a>
             ))}
@@ -166,7 +166,7 @@ export function Contact() {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="mt-16 max-w-2xl mx-auto"
           >
-            <div className="p-8 sm:p-12 rounded-2xl bg-gradient-to-b from-white/5 to-transparent border border-white/10">
+            <div className="p-8 sm:p-12 rounded-2xl bg-linear-to-b from-white/5 to-transparent border border-white/10">
               <div className="text-center mb-8">
                 <h3 className="text-2xl sm:text-3xl mb-3">Interessado em nossos serviços?</h3>
                 <p className="text-gray-400">Preencha o formulário e entrarei em contato com você</p>

@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/db';
 import type { ContatoCreate } from './types';
@@ -17,9 +16,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Obter cliente da pool
+    console.log('Tentando conectar ao banco de dados...');
+
+    // Obter cliente da pool com retry
     const pool = getDatabase();
     client = await pool.connect();
+    
+    console.log('Conexão estabelecida. Inserindo contato...');
 
     // Inserir contato na tabela contatos_novos
     const query = `
@@ -37,6 +40,8 @@ export async function POST(req: NextRequest) {
 
     const contatoId = result.rows[0].id;
 
+    console.log('Contato inserido com sucesso. ID:', contatoId);
+
     return NextResponse.json({ 
       success: true,
       id: contatoId,
@@ -45,7 +50,20 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Erro ao salvar contato:', error);
     
-    const errorMessage = error instanceof Error ? error.message : 'Erro interno ao salvar contato.';
+    let errorMessage = 'Erro interno ao salvar contato.';
+    
+    if (error instanceof Error) {
+      errorMessage = error.message;
+      
+      // Mensagens mais amigáveis para erros comuns
+      if (error.message.includes('Connection terminated')) {
+        errorMessage = 'Erro de conexão com o banco de dados. Tente novamente em alguns segundos.';
+      } else if (error.message.includes('timeout')) {
+        errorMessage = 'A requisição demorou muito. Por favor, tente novamente.';
+      } else if (error.message.includes('ECONNREFUSED')) {
+        errorMessage = 'Não foi possível conectar ao banco de dados.';
+      }
+    }
     
     return NextResponse.json(
       { success: false, message: errorMessage },
@@ -53,7 +71,11 @@ export async function POST(req: NextRequest) {
     );
   } finally {
     if (client) {
-      client.release();
+      try {
+        client.release();
+      } catch (e) {
+        console.error('Erro ao liberar cliente:', e);
+      }
     }
   }
 }

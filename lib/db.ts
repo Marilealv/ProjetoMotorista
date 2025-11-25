@@ -3,7 +3,7 @@ import { Pool } from 'pg';
 
 let pool: Pool | null = null;
 
-function getPool(): Pool {
+export function getDatabase(): Pool {
   if (!process.env.NEON_DATABASE_URL) {
     throw new Error('NEON_DATABASE_URL environment variable is not set');
   }
@@ -14,32 +14,22 @@ function getPool(): Pool {
       ssl: {
         rejectUnauthorized: false,
       },
-      // Configurações otimizadas para Vercel
-      max: 5, // Limite de conexões simultâneas
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 2000,
+      max: 10,
+      idleTimeoutMillis: 60000,
+      connectionTimeoutMillis: 10000,
+      statement_timeout: 30000, // <-- NOME CORRETO
+      application_name: 'motorista-particular',
     });
 
     pool.on('error', (err) => {
-      console.error('Erro inesperado no pool de conexão:', err);
-      pool = null; // Reset pool em caso de erro
+      console.error('Erro inesperado no pool:', err);
+      // NÃO ZERA O POOL — isso quebra tudo
+    });
+
+    pool.on('connect', () => {
+      console.log('Conexão estabelecida com sucesso');
     });
   }
+
   return pool;
 }
-
-export async function queryDatabase(query: string, values?: (string | number | boolean | null)[]) {
-  const client = await getPool().connect();
-  try {
-    const result = await client.query(query, values);
-    return result.rows;
-  } finally {
-    client.release();
-  }
-}
-
-export function getDatabase(): Pool {
-  return getPool();
-}
-
-export default pool;

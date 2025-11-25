@@ -58,7 +58,7 @@ export function About() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="flex items-start space-x-3 text-left"
                 >
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-white/10 flex items-center justify-center mt-0.5">
+                  <div className="shrink-0 w-6 h-6 rounded-full bg-white/10 flex items-center justify-center mt-0.5">
                     <CheckCircle2 className="w-4 h-4 text-white" />
                   </div>
                   <span className="text-gray-300">{benefit}</span>
