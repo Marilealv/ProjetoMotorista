@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Pool } from 'pg';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const dbUrl = process.env.NEON_DATABASE_URL;
     
@@ -16,7 +17,6 @@ export async function GET(req: NextRequest) {
     }
 
     // Testar conexão
-    const { Pool } = require('pg');
     const pool = new Pool({
       connectionString: dbUrl,
       ssl: {
