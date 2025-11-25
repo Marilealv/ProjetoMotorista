@@ -4,8 +4,8 @@ import { getDatabase } from '@/lib/db';
 import type { ContatoCreate } from './types';
 
 export async function POST(req: NextRequest) {
-  const pool = getDatabase();
-  const client = await pool.connect();
+  let client;
+  
   try {
     const data: ContatoCreate = await req.json();
 
@@ -16,6 +16,10 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Obter cliente da pool
+    const pool = getDatabase();
+    client = await pool.connect();
 
     // Inserir contato na tabela contatos_novos
     const query = `
@@ -40,11 +44,16 @@ export async function POST(req: NextRequest) {
     });
   } catch (error) {
     console.error('Erro ao salvar contato:', error);
+    
+    const errorMessage = error instanceof Error ? error.message : 'Erro interno ao salvar contato.';
+    
     return NextResponse.json(
-      { success: false, message: 'Erro interno ao salvar contato.' },
+      { success: false, message: errorMessage },
       { status: 500 }
     );
   } finally {
-    client.release();
+    if (client) {
+      client.release();
+    }
   }
 }
